@@ -1,0 +1,70 @@
+{
+  "api": [
+    {
+      "codigo_venta": 3,
+      "fecha_venta": "17-11-2024",
+      "total": 3265465.43,
+      "lista_prod": [],
+      "unCliente": null,
+      "id": "b500"
+    },
+    {
+      "codigo_venta": 102,
+      "fecha_venta": "20-11-2024",
+      "total": 6565.43,
+      "id": "a93d",
+      "lista_prod": [
+        {
+          "codigo_producto": 152,
+          "nombre": "Tallarines",
+          "marca": "Marolio",
+          "costo": 3000,
+          "stock": 2
+        },
+        {
+          "codigo_producto": 202,
+          "nombre": "Caldos de pollo",
+          "marca": "Knorr",
+          "costo": 500,
+          "stock": 20
+        },
+        {
+          "codigo_producto": 203,
+          "nombre": "Masitas",
+          "marca": "Oreo",
+          "costo": 6577,
+          "stock": 15
+        }
+      ],
+      "unCliente": {
+        "id_cliente": 3,
+        "nombre": "Bruno",
+        "apellido": "Rosales",
+        "edad": 27,
+        "dni": 786876
+      }
+    },
+    {
+      "id": "b7d4",
+      "codigo_venta": "7000",
+      "fecha_venta": "2025-01-21",
+      "total": "7676",
+      "lista_prod": [
+        {
+          "codigo_producto": "7000",
+          "nombre": "Chocolatada",
+          "marca": "Nesquick",
+          "costo": "2500",
+          "stock": 5
+        }
+      ],
+      "unCliente": {
+        "id_cliente": "56765765",
+        "nombre": "Lautaro",
+        "apellido": "Di Salvo",
+        "edad": "17",
+        "dni": "41141736"
+      }
+    }
+  ]
+}
