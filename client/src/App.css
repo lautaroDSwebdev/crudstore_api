@@ -7,10 +7,103 @@ body {
   h2{
     text-align: center;
   }
-
+button{
+  cursor: pointer;
+  padding: 2px;
+}
   .grid{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     gap: 2rem;
     padding: 2rem;
+    margin: auto;
+    max-width: 900px;
   }
+
+.div_buttons{
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
+  button{
+    min-width: 70px;
+
+  }
+  @media screen and (width< 768px) {
+    display: flex;
+    flex-flow: column;
+    
+  }
+  
+}
+.form_modalprod{
+  position: absolute;
+  inset: 4rem;
+  background: #6969698f;
+  padding: 2rem;
+  .div_modalprod{
+    position: absolute;
+    inset: 5rem;
+    background: #f3f2f2;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    .section_buttons{
+      display: flex;
+      justify-content: space-evenly;
+      gap: 5px;
+    }
+  }
+}
+.forms{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* tabla ventas */
+table {
+  width: max-content;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+th {
+  background-color: #9d9fa1;
+  color: white;
+}
+tr:hover {
+  background-color: #f1f1f1;
+}
+.div_nav-routes{
+  display: flex;
+  margin: 0;
+  height: 99vh;
+  justify-content: space-evenly;
+}
+.nav_styles{
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-flow: column;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 8rem;
+  background: #868484;
+  align-items: center;
+  a{
+    color: #fff;
+  }
+}
+.modal_button{
+  position: absolute;
+  top: 3rem;
+  right: 0;
+}

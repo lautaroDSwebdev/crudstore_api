@@ -1,69 +1,35 @@
 {
   "api": [
     {
-      "codigo_venta": 3,
-      "fecha_venta": "17-11-2024",
-      "total": 3265465.43,
-      "lista_prod": [],
-      "unCliente": null,
-      "id": "b500"
+      "id": "a93d"
     },
     {
-      "codigo_venta": 102,
-      "fecha_venta": "20-11-2024",
-      "total": 6565.43,
-      "id": "a93d",
-      "lista_prod": [
-        {
-          "codigo_producto": 152,
-          "nombre": "Tallarines",
-          "marca": "Marolio",
-          "costo": 3000,
-          "stock": 2
-        },
-        {
-          "codigo_producto": 202,
-          "nombre": "Caldos de pollo",
-          "marca": "Knorr",
-          "costo": 500,
-          "stock": 20
-        },
-        {
-          "codigo_producto": 203,
-          "nombre": "Masitas",
-          "marca": "Oreo",
-          "costo": 6577,
-          "stock": 15
-        }
-      ],
+      "id": "8d56"
+    },
+    {
+      "id": "a9bb",
+      "codigo_venta": "56464",
+      "fecha_venta": "2025-01-29",
+      "total": "76576",
       "unCliente": {
-        "id_cliente": 3,
-        "nombre": "Bruno",
-        "apellido": "Rosales",
-        "edad": 27,
-        "dni": 786876
+        "id_cliente": "2356",
+        "nombre": "Fercho",
+        "apellido": "Guevara",
+        "edad": "56",
+        "dni": "3223546"
       }
     },
     {
-      "id": "b7d4",
-      "codigo_venta": "7000",
-      "fecha_venta": "2025-01-21",
-      "total": "7676",
-      "lista_prod": [
-        {
-          "codigo_producto": "7000",
-          "nombre": "Chocolatada",
-          "marca": "Nesquick",
-          "costo": "2500",
-          "stock": 5
-        }
-      ],
+      "id": "df22",
+      "codigo_venta": "98065",
+      "fecha_venta": "2025-01-29",
+      "total": "23",
       "unCliente": {
-        "id_cliente": "56765765",
-        "nombre": "Lautaro",
-        "apellido": "Di Salvo",
-        "edad": "17",
-        "dni": "41141736"
+        "id_cliente": "976454",
+        "nombre": "Ernesto",
+        "apellido": "dscdscsd",
+        "edad": "24",
+        "dni": "4363645"
       }
     }
   ]

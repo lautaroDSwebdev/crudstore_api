@@ -10,20 +10,24 @@ export const Nav = () => {
     {
       id: 2,
       url: "/data",
-      view: "Tienda y  clientes",
+      view: "Ventas ",
+    },
+    {
+      id: 3,
+      url: "/cliente",
+      view: "Clientes",
+    },
+    {
+      id: 4,
+      url: "/prods",
+      view: "Productos",
     },
   ];
 
-  const estilos = {
-    display: "flex",
-    justifyContent: "space-between",
-    maxWidth: "300px",
-    margin: "auto",
-    padding: "5px" 
-  };
+ 
 
   return (
-    <div style={estilos}>
+    <div className="nav_styles" >
       {dataNav.map((e) => (
         <Link key={e.id} to={e.url}> {e.view}</Link>
       ))}
