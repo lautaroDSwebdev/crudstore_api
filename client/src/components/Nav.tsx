@@ -2,23 +2,19 @@ import { Link } from "react-router-dom";
 
 export const Nav = () => {
   let dataNav = [
+   
     {
-      id: 1,
-      url: "/",
-      view: "Home",
-    },
-    {
-      id: 2,
-      url: "/data",
+      id: 0,
+      url: "/venta",
       view: "Ventas ",
     },
     {
-      id: 3,
+      id: 1,
       url: "/cliente",
       view: "Clientes",
     },
     {
-      id: 4,
+      id: 2,
       url: "/prods",
       view: "Productos",
     },

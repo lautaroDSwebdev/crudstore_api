@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useMutationsVentas } from "../intercecptors";
 import { ArrayTienda } from "../types/TypesTiendaBackend";
-import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export const TableVenta = () => {
@@ -14,68 +13,45 @@ export const TableVenta = () => {
   } = useMutationsVentas();
 
   const { data } = GetVentasquery
-
   const [modal, setmodal] = useState(false)
   const [dataeditventa, setdataeditventa] = useState(null)
   console.log(dataeditventa)
-
   const { register, handleSubmit, reset } = useForm();
 
-
-  const onSubmit: SubmitHandler<ArrayTienda> = (dataVenta) => {
-    if (dataVenta.codigo_venta) {
-      mutationPutVentas.mutate(dataVenta)
-      console.log(dataVenta.codigo_venta)
-      console.log("data editada")
-    } else {
-      mutationPostVentas.mutate(dataVenta)
-      console.log("data creada")
-      console.log(dataVenta)
-
-    }
-  }
-  const nav = useNavigate()
-
   const HandleEditVenta = (e) => {
-    console.log(e)
-    console.log("Data para editar venta")
     setdataeditventa(e)
     reset(e)
   }
 
-
   const EditVenta = (e: ArrayTienda) => {
-    nav("/")
+    setmodal(true)
     HandleEditVenta(e)
   }
 
+  const onSubmit: SubmitHandler<ArrayTienda> = (dataVenta) => {
+    if (dataVenta.codigo_venta) {
+      mutationPutVentas.mutate(dataVenta)
+    } else {
+      mutationPostVentas.mutate(dataVenta)
+    }
+    setmodal(false)
+  }
   return (
     <>
       <button onClick={() => setmodal(!modal)} className="modal_button">abrir modal</button>
-      {!data && <h2>Cargando...</h2>}
-      {!data && <h2>Hubo un error</h2>}
       <div className="grid">
         {
           modal &&
-          <div>
-            <h2 className="">Formulario de Venta</h2>
-            <div className="form-container">
-              <div className="div_form">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <section>
-                    <h2>Venta</h2>
-                    <div className="form-group">
-                      <input type="date"  {...register("fecha_venta")} />
-                    </div>
-                    <div className="form-group">
-                      <input type="text" placeholder="total precio" {...register("total")} />
-                    </div>
-                  </section>
-                  <section>
-                    <input type='submit'></input>
-                  </section>
-                </form>
-              </div>
+          <div className="modal">
+            <div className="modal-content">
+              <h2>{dataeditventa ? "Editar venta": "Crear venta"}</h2>
+              <svg onClick={() => setmodal(!modal)} 
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: "#f51919", cursor: "pointer" }} ><path d="M19.002 3h-14c-1.103 0-2 .897-2 2v4h2V5h14v14h-14v-4h-2v4c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.898-2-2-2z"></path><path d="m11 16 5-4-5-4v3.001H3v2h8z"></path></svg>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <input type="date" {...register("fecha_venta")} placeholder="fecha venta" />
+                <input type="number" {...register("total")} placeholder="total" />
+                <button type="submit">crear</button>
+              </form>
             </div>
           </div>
         }
@@ -100,6 +76,22 @@ export const TableVenta = () => {
                   </td>
                 </tr>
               ))
+            }
+            {
+              data?.length === 0 &&
+              <tr className="tr_error-data">
+                <td>sin datos</td>
+                <td>sin datos</td>
+                <td>sin datos</td>
+              </tr>
+            }
+            {
+              data === undefined &&
+              <tr className="tr_error-data">
+                <td>sin datos</td>
+                <td>sin datos</td>
+                <td>sin datos</td>
+              </tr>
             }
 
           </tbody>

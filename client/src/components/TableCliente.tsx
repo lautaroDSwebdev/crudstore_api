@@ -23,8 +23,6 @@ export const TableCliente = (
   return (
     <>
 
-      {!data && <h2>Cargando...</h2>}
-      {!data && <h2>Hubo un error</h2>}
       <div className="grid">
         <table>
           <thead>
@@ -48,6 +46,26 @@ export const TableCliente = (
                 </td>
               </tr>
             ))}
+            {
+              data?.length === 0  &&
+              <tr className="tr_error-data" >
+                <td>sin datos</td>
+                <td>sin datos</td>
+                <td>sin datos</td>
+                <td>sin datos</td>
+                <td>sin datos</td>
+              </tr>
+            }
+            {
+              data === undefined  &&
+              <tr className="tr_error-data" >
+                <td>sin datos</td>
+                <td>sin datos</td>
+                <td>sin datos</td>
+                <td>sin datos</td>
+                <td>sin datos</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

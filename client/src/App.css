@@ -7,10 +7,7 @@ body {
   h2{
     text-align: center;
   }
-button{
-  cursor: pointer;
-  padding: 2px;
-}
+
   .grid{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
@@ -34,29 +31,6 @@ button{
     
   }
   
-}
-.form_modalprod{
-  position: absolute;
-  inset: 4rem;
-  background: #6969698f;
-  padding: 2rem;
-  .div_modalprod{
-    position: absolute;
-    inset: 5rem;
-    background: #f3f2f2;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    .section_buttons{
-      display: flex;
-      justify-content: space-evenly;
-      gap: 5px;
-    }
-  }
-}
-.forms{
-  display: flex;
-  justify-content: space-evenly;
 }
 
 /* tabla ventas */
@@ -106,4 +80,94 @@ tr:hover {
   position: absolute;
   top: 3rem;
   right: 0;
+}
+.modal_form{
+  position: absolute;
+
+}
+
+
+/* Modal */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+}
+
+/* Contenido de la Modal */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Botón de Cierre */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Estilos del Formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-weight: bold;
+  text-align: left;
+}
+
+input, select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.tr_error-data{
+  td{
+    color: #e69898;
+  }
 }

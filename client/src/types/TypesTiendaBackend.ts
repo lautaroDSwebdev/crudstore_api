@@ -8,7 +8,7 @@ export interface ArrayTienda {
   
   export interface ListaProd {
     codigo_producto: number
-    nombre: string
+    nombre_producto: string
     marca: string
     costo: number
     stock: number

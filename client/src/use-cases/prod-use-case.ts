@@ -9,10 +9,19 @@ export const getProductos = async () => {
     const res = await apiProds.get<ListaProd[]>("/get")
     return res.data
 }
-export const postProductos = async (dataprod: ListaProd[]) => {
+export const postProductos = async (dataprod: ListaProd) => {
     try {
         const res = await apiProds.post("/post", dataprod)
         console.log("Producto creado")
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const putProductos = async (dataprod: ListaProd) => {
+    try {
+        const res = await apiProds.put(`/put`, dataprod)
+        console.log("Producto editado")
         return res.data
     } catch (error) {
         console.log(error)
