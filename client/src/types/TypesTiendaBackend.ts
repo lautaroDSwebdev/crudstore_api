@@ -1,24 +1,38 @@
-export interface ArrayTienda {
-    codigo_venta: number
-    fecha_venta: string
-    total: number
-    lista_prod: ListaProd[]
-    unCliente?: UnCliente
-  }
-  
-  export interface ListaProd {
-    codigo_producto: number
-    nombre_producto: string
-    marca: string
-    costo: number
-    stock: number
-  }
-  
-  export interface UnCliente {
-    id_cliente: number
-    nombre_cliente: string
-    apellido: string
-    edad: number
-    dni: number
-  }
-  
+export interface PedidosEntity {
+  idPedido: number
+  fechaPedido: string
+  seniaPagada: boolean
+  // listProds: Productos[]
+  compradorRelacion: CompradorRelacion
+  locacionTienda: string,
+}
+
+export interface Productos {
+  id_producto: number
+  marca: string
+  proveedor: string
+  precio: number
+  stock: number
+  numberoTalle: number
+  color: string
+  categoria_prod: CategoriaProd
+}
+
+export interface ProductMapper{
+  value: number
+  label: string
+}
+
+export interface CategoriaProd {
+  id_categoria: number
+  nombre: string
+  descripcion: string
+}
+
+export interface CompradorRelacion {
+  idComprador: number
+  nombreComprador: string
+  apellidoComprador: string
+  dniComprador: number
+  numTarjeta: number
+}

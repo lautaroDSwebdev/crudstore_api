@@ -1,4 +1,4 @@
-export * from '../use-cases/clientes-use-case';
-export * from './useMutationClientes';
+export * from './useMutationCategoria';
+export * from './useMutationPedidos';
+export * from './useMutationsComprador';
 export * from './useMutationsProds';
-export * from './useMutationsVentas';

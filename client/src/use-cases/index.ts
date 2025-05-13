@@ -1,3 +1,4 @@
-export * from './clientes-use-case';
-export * from './prod-use-case';
-export * from './ventas-use-case';
+export * from './categoria-use-case';
+export * from './comprador-use-case';
+export * from './pedidos-use-case';
+export * from './producto-use-case';

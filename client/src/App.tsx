@@ -1,17 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {  Nav, TableCliente, TableProductos, TableVenta } from "./components";
-
+import {  Tablecategoria, TableComprador, TablePedidos } from "./components";
+import { NavBar} from "./components/Navbar"
 function App() {
 
   return (
     <BrowserRouter>
       <div className="div_nav-routes">
-
-        <Nav></Nav>
+        <NavBar></NavBar>
         <Routes>
-          <Route path="/venta" element={<TableVenta  />} />
-          <Route path="/cliente" element={<TableCliente />} />
-          <Route path="/prods" element={<TableProductos />} />
+          <Route path="/categoria" element={<Tablecategoria />} />
+           <Route path="/comprador" element={<TableComprador />} />
+          <Route path="/pedido" element={<TablePedidos />} /> 
         </Routes>
       </div>
     </BrowserRouter>

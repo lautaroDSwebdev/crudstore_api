@@ -1,10 +1,31 @@
 {
-  "api": [
+  "ventas": [
     {
-      "id": "a93d"
+      "id": "a93d",
+      "codigo_venta": "56464",
+      "fecha_venta": "2025-01-29",
+      "total": "76576",
+      "unCliente": {
+        "id_cliente": "2356",
+        "nombre": "Fercho",
+        "apellido": "Guevara",
+        "edad": "56",
+        "dni": "3223546"
+      }
+      
     },
     {
-      "id": "8d56"
+      "id": "8d56",
+      "codigo_venta": "56464",
+      "fecha_venta": "2025-01-29",
+      "total": "76576",
+      "unCliente": {
+        "id_cliente": "2356",
+        "nombre": "Fercho",
+        "apellido": "Guevara",
+        "edad": "56",
+        "dni": "3223546"
+      }
     },
     {
       "id": "a9bb",

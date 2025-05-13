@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { ListaProd } from "../types/TypesTiendaBackend";
-import { deleteProducto, getProductos, postProductos, putProductos } from "../use-cases";
+import { Productos } from "../types/TypesTiendaBackend";
+import { deleteProductos, getProductos, postProductos, updateProductos } from "../use-cases";
 
 
 export function useMutationsProds() {
@@ -14,7 +14,7 @@ export function useMutationsProds() {
     });
 
     const mutationPostProductos = useMutation({
-        mutationFn: (dataprod: ListaProd) => {
+        mutationFn: (dataprod: Productos) => {
             return postProductos(dataprod)
         },
         onSuccess: function Exito() {
@@ -25,8 +25,8 @@ export function useMutationsProds() {
         }
     })
     const mutationPutProductos = useMutation({
-        mutationFn: (dataprod: ListaProd) => {
-            return putProductos(dataprod)
+        mutationFn: (dataprod: Productos) => {
+            return updateProductos(dataprod)
         },
         onSuccess: function Exito() {
             alert("Put exitoso")
@@ -39,7 +39,7 @@ export function useMutationsProds() {
 
 
     const mutationDeleteProd= useMutation({
-        mutationFn: deleteProducto,
+        mutationFn: deleteProductos,
         onSuccess: function Exito() {
             QueryC.invalidateQueries({
                 queryKey: ["data_prot"]
