@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-import {  CompradorRelacion } from "../types/TypesTiendaBackend";
+import {  Comprador } from "../types/TypesTiendaBackend";
 import { postCompador, getCompador, deleteCompador, putCompador  } from "../use-cases";
 
 
@@ -16,7 +16,7 @@ export function useMutationsComprador() {
  
 
     const mutationPostCompador = useMutation({
-        mutationFn: (dataCompador: CompradorRelacion) => {
+        mutationFn: (dataCompador: Comprador) => {
             return postCompador(dataCompador)
         },
         onSuccess: function Exito() {
@@ -29,7 +29,7 @@ export function useMutationsComprador() {
 
 
     const mutationPutCompador = useMutation({
-        mutationFn: (dataCompador: CompradorRelacion ) =>  putCompador(dataCompador),
+        mutationFn: (dataCompador: Comprador ) =>  putCompador(dataCompador),
         onSuccess: function Exito() {
             console.log("Edicion exitoso")
             QueryC.invalidateQueries({
@@ -44,7 +44,6 @@ export function useMutationsComprador() {
             QueryC.invalidateQueries({
                 queryKey: ["data_comprador"]
             })
-            alert("Eliminado exitosamente")
         }
     })
 

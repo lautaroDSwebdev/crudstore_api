@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutationsComprador} from "../intercecptors";
-import { CompradorRelacion } from "../types/TypesTiendaBackend";
+import { Comprador } from "../types/TypesTiendaBackend";
 import { SubmitHandler, useForm } from "react-hook-form";
 export const TableComprador = () => {
 
@@ -16,7 +16,7 @@ export const TableComprador = () => {
   const { data } = GetCompradorquery
   const [modal, setmodal] = useState(false)
   const [dataeditcliente, setdataeditcliente] = useState(null)
-  console.log(dataeditcliente)
+  console.log(data)
 
 
   
@@ -35,12 +35,12 @@ export const TableComprador = () => {
     reset(e)
   }
 
-  const EditCliente = (e: CompradorRelacion) => {
+  const EditCliente = (e: Comprador) => {
     setmodal(true)
     HandleEditCliente(e)
   }
 
-  const onSubmit: SubmitHandler<CompradorRelacion> = (data) => {
+  const onSubmit: SubmitHandler<Comprador> = (data) => {
     if (data.idComprador) {
       mutationPutCompador.mutate(data)
       console.log("Put exitoso")

@@ -18,7 +18,6 @@ export function useMutationPedidos() {
             return postPedido(datapedido)
         },
         onSuccess: function Exito() {
-            alert("Post exitoso")
             QueryC.invalidateQueries({
                 queryKey: ["data_pedido"]
             })
@@ -41,7 +40,6 @@ export function useMutationPedidos() {
             QueryC.invalidateQueries({
                 queryKey: ["data_pedido"]
             })
-            alert("Eliminado exitosamente")
         }
     })
 

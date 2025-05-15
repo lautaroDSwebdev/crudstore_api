@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useMutationPedidos, useMutationsComprador, useMutationsProds } from "../intercecptors";
-import { CompradorRelacion, PedidosEntity, Productos } from "../types/TypesTiendaBackend";
-import { ServiceEntityMapper } from "../mappers/ProdMapper";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Comprador, PedidosEntity } from "../types/TypesTiendaBackend";
+// import Select from 'react-select'
+// import { ServiceEntityMapper } from "../mappers/ProdMapper";
 // import Multiselect from 'multiselect-react-dropdown';
-import Select from 'react-select'
+import { SubmitHandler, useForm } from "react-hook-form";
 export const TablePedidos = () => {
 
   const {
@@ -13,29 +13,32 @@ export const TablePedidos = () => {
     mutationPostPedidos,
     mutationPutPedidos
   } = useMutationPedidos();
-  const { GetProds } = useMutationsProds()
+  // const { GetProds } = useMutationsProds()
 
 
   const { GetCompradorquery } = useMutationsComprador()
 
   const { data: dataPedido } = GetPedido
-  const { data: dataProds } = GetProds
+  // const { data: dataProds } = GetProds
   const { data: dataComprador } = GetCompradorquery
+  // console.log(dataPedido)
+  // console.log(dataComprador)
+
 
   const [modal, setmodal] = useState(false)
   const [dataeditPedido, setdataeditPedido] = useState(null)
-  console.log(dataeditPedido)
+  // console.log(dataeditPedido)
   const { register, handleSubmit, reset } = useForm();
 
   const HandleEditPedido = (e) => {
-    if(e){
+    if (e) {
       setdataeditPedido(e)
       reset({
         ...e,
         fechaPedido: (e as PedidosEntity).fechaPedido,
-        compradorRelacion: (e as PedidosEntity).compradorRelacion.idComprador,
+        compradorRelacion: (e as Comprador).idComprador,
         locacionTienda: (e as PedidosEntity).locacionTienda
-      } )
+      })
 
     }
   }
@@ -44,33 +47,30 @@ export const TablePedidos = () => {
     setmodal(true)
     HandleEditPedido(e)
   }
-  //  idPedido: number
-  //   fechaPedido: string
-  //   seniaPagada: boolean
-  //   listProds: Productos[]
-  //   compradorRelacion: CompradorRelacion
 
   const onSubmit: SubmitHandler<PedidosEntity> = (data) => {
     if (data.idPedido) {
 
-      mutationPutPedidos.mutate(data)
-      // console.log("Put exitoso")
+      console.log("Put exitoso")
       console.log("Lo que retorna el edit")
-      console.log(data)
+      console.log({
+        ...data
+      })
+      mutationPutPedidos.mutate({
+        ...data,
+        // listProds: (data as Productos[]).map(e => e.id_producto),
+        // compradorRelacion: (data as Comprador).idComprador
+      })
     } else {
-
-      console.log("Lo que retorna el post de pedidos")
+      mutationPostPedidos.mutate({
+        ...data
+        // listProds: (data as Productos[]).map(e => e.id_producto),
+      })
       console.log({
         ...data,
         // listProds: (data as Productos[]).map(e => e.id_producto),
-        compradorRelacion: (data as CompradorRelacion).nombreComprador
+        // compradorRelacion: {dataComprador}
       })
-      // console.log(data)
-      // mutationPostPedidos.mutate({
-      //   ...data,
-      //   // listProds: (data as Productos[]).map(e => e.id_producto),
-      //   compradorRelacion: (data as CompradorRelacion).idComprador
-      // })
     }
 
     setmodal(false)
@@ -98,9 +98,10 @@ export const TablePedidos = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <input type="date" {...register("fechaPedido")} placeholder="fecha Pedido" />
                 <label htmlFor="seña">seña pagada</label>
+
                 <input type="checkbox" id="seña" {...register("seniaPagada")} placeholder="seña pagada" />
                 <label htmlFor="pais">selecciona el pais</label>
-                <select {...register("locacionTienda")} id="pais">
+                <select {...register("locacionTienda")} name="" id="pais">
                   {
                     paises.map(e => (
                       <option key={e.name} value={e.name}>{e.name}</option>
@@ -128,7 +129,8 @@ export const TablePedidos = () => {
                     ))
                   }
                 </select> */}
-                <select {...register("compradorRelacion", { valueAsNumber: true })} name="comprador" id="">
+                <label htmlFor="comprador_pedido">Comprador del pedido</label>
+                <select {...register("compradorRelacion", { valueAsNumber: true })} name="compradorRelacion" id="">
                   {
                     dataComprador &&
                     dataComprador.map(e => (
@@ -140,7 +142,7 @@ export const TablePedidos = () => {
                   }
                   {
                     !dataComprador &&
-                    <option value="rellena la otra informacion por favor">---</option>
+                    <option value="">- haz un comprador-</option>
                   }
                 </select>
                 <button type="submit">{dataeditPedido ? "editar Pedido" : "crear Pedido"}</button>

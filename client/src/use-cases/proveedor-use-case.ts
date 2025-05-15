@@ -1,23 +1,23 @@
 import axios from "axios";
-import { PedidosEntity } from "../types/TypesTiendaBackend";
+import { ProveedorType} from "../types/TypesTiendaBackend";
 import { api_general } from "../api";
 import { Bounce, toast } from "react-toastify";
 
 
 
 
-const apiPedido = axios.create({
+const apiProveedor = axios.create({
     baseURL: `${api_general}`
 })
-export const getPedido = async () => {
-    const res = await apiPedido.get<PedidosEntity[]>("/pedido")
+export const getProveedor = async () => {
+    const res = await apiProveedor.get<ProveedorType[]>("/proveedor")
     return res.data
 }
-export const postPedido = async (datapedido: PedidosEntity) => {
+export const postProveedor = async (dataProveedor: ProveedorType) => {
     try {
-        const res = await apiPedido.post("/pedido", datapedido)
-        console.log("Pedido creado")
-        toast.success('Pedido creado ✅', {
+        const res = await apiProveedor.post("/proveedor", dataProveedor)
+        console.log("Proveedor creado")
+        toast.success('Proveedor creado ✅', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -30,7 +30,7 @@ export const postPedido = async (datapedido: PedidosEntity) => {
         });
         return res.data
     } catch (error) {
-        toast.warning('Pedido no se pudo crear 🛑', {
+        toast.warning('Proveedor no se pudo crear 🛑', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -44,13 +44,13 @@ export const postPedido = async (datapedido: PedidosEntity) => {
         console.log(error)
     }
 }
-export const updatePedido = async (datapedido: PedidosEntity) => {
-    const res = await apiPedido.put(`/pedido`, datapedido)
+export const updateProveedor = async (dataProveedor: ProveedorType) => {
+    const res = await apiProveedor.put(`/proveedor`, dataProveedor)
     return res.data
 }
-export const deletePedido = async (codigo_Pedido: number) => {
+export const deleteProveedor = async (codigo_Proveedor: number) => {
     try {
-        toast.success('Pedido eliminado 🗑', {
+        toast.success('Proveedor eliminado 🗑', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -61,7 +61,7 @@ export const deletePedido = async (codigo_Pedido: number) => {
             theme: "light",
             transition: Bounce,
         });
-        await apiPedido.delete(`/pedido/${codigo_Pedido}`)
+        await apiProveedor.delete(`/proveedor/${codigo_Proveedor}`)
     } catch (error) {
         
         console.log(error)

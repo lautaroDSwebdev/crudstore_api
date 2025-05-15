@@ -18,6 +18,16 @@ export const NavBar = () => {
       url: "/pedido",
       view: "pedido",
     },
+    {
+      id: 4,
+      url: "/proveedor",
+      view: "proveedor",
+    },
+    {
+      id: 3,
+      url: "/productos",
+      view: "productos",
+    },
   ];
 
  

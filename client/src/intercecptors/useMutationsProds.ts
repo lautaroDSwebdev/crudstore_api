@@ -18,7 +18,6 @@ export function useMutationsProds() {
             return postProductos(dataprod)
         },
         onSuccess: function Exito() {
-            alert("Post exitoso")
             QueryC.invalidateQueries({
                 queryKey: ["data_prot"]
             })
@@ -29,7 +28,6 @@ export function useMutationsProds() {
             return updateProductos(dataprod)
         },
         onSuccess: function Exito() {
-            alert("Put exitoso")
             QueryC.invalidateQueries({
                 queryKey: ["data_prot"]
             })
@@ -44,7 +42,6 @@ export function useMutationsProds() {
             QueryC.invalidateQueries({
                 queryKey: ["data_prot"]
             })
-            alert("Eliminado exitosamente")
         }
     })
 

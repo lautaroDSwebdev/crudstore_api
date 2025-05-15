@@ -18,7 +18,6 @@ export function useMutationCategoria() {
             return postCategoria(datacategoria)
         },
         onSuccess: function Exito() {
-            alert("Post exitoso")
             QueryC.invalidateQueries({
                 queryKey: ["data_categoria"]
             })
@@ -41,7 +40,6 @@ export function useMutationCategoria() {
             QueryC.invalidateQueries({
                 queryKey: ["data_categoria"]
             })
-            alert("Eliminado exitosamente")
         }
     })
 

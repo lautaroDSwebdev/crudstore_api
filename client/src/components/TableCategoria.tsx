@@ -17,6 +17,7 @@ export const Tablecategoria = () => {
   const [modal, setmodal] = useState(false)
   const [dataeditcategoria, setdataeditcategoria] = useState(null)
   console.log(dataeditcategoria)
+  console.log(data)
   const { register, handleSubmit, reset } = useForm();
 
   const HandleEditcategoria = (e) => {

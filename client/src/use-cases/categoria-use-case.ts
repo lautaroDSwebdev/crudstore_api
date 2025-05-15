@@ -1,6 +1,7 @@
 import axios from "axios";
 import { CategoriaProd } from "../types/TypesTiendaBackend";
 import { api_general } from "../api";
+import { Bounce, toast } from "react-toastify";
 
 
 
@@ -20,18 +21,96 @@ export const postCategoria = async (dataCategoria: CategoriaProd) => {
     try {
         const res = await apiCategoria.post("/categoria", dataCategoria)
         console.log("Categoria creado")
+        toast.success('Categoria creada ✅', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
         return res.data
     } catch (error) {
+        toast.warning('esta categoria no se pudo eliminar 🛑', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
         console.log(error)
     }
 }
-export const updateCategoria = async ( dataCategoria: CategoriaProd) => {
-    const res = await apiCategoria.put(`/categoria`, dataCategoria)
-    return res.data
+export const updateCategoria = async (dataCategoria: CategoriaProd) => {
+    try {
+        
+        const res = await apiCategoria.put(`/categoria`, dataCategoria)
+        toast.success('Categoria editada ✅', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+        return res.data
+    } catch (error) {
+        toast.warning('Categoria no se pudo editar 🛑', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+
+
+        console.log(error)
+    }
 }
 export const deleteCategoria = async (codigo_Categoria: number) => {
-    await apiCategoria.delete(`/categoria/${codigo_Categoria}`)
-    
+    try {
+        
+        await apiCategoria.delete(`/categoria/${codigo_Categoria}`)
+        toast.success('Categoria eliminada 🗑', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+    } catch (error) {
+        toast.warning('Categoria no se pudo eliminar 🛑', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+        console.log(error)
+    }
+
 }
 
 
