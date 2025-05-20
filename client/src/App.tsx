@@ -12,8 +12,8 @@ function App() {
           <Route path="/categoria" element={<Tablecategoria />} />
            <Route path="/comprador" element={<TableComprador />} />
           <Route path="/pedido" element={<TablePedidos />} /> 
-          <Route path="/proveedor" element={<Tableproveedor />} /> 
-          {/* <Route path="/productos" element={<TableProductos />} />  */}
+          <Route path="/productos" element={<TableProductos />} /> 
+          {/* <Route path="/proveedor" element={<Tableproveedor />} />  */}
         </Routes>
       </div>
     </BrowserRouter>

@@ -17,18 +17,26 @@ export const TablePedidos = () => {
 
 
   const { GetCompradorquery } = useMutationsComprador()
+   
 
   const { data: dataPedido } = GetPedido
   // const { data: dataProds } = GetProds
   const { data: dataComprador } = GetCompradorquery
   // console.log(dataPedido)
-  // console.log(dataComprador)
 
 
   const [modal, setmodal] = useState(false)
   const [dataeditPedido, setdataeditPedido] = useState(null)
   // console.log(dataeditPedido)
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      fechaPedido: "",
+      locacionTienda: "",
+      compradorRelacion: "",
+      listProveedor: null,
+      seniaPagada: false
+    }
+  });
 
   const HandleEditPedido = (e) => {
     if (e) {
@@ -62,14 +70,14 @@ export const TablePedidos = () => {
         // compradorRelacion: (data as Comprador).idComprador
       })
     } else {
-      mutationPostPedidos.mutate({
-        ...data
-        // listProds: (data as Productos[]).map(e => e.id_producto),
-      })
+      // mutationPostPedidos.mutate({
+      //   ...data
+      //   // listProds: (data as Productos[]).map(e => e.id_producto),
+      // })
       console.log({
         ...data,
         // listProds: (data as Productos[]).map(e => e.id_producto),
-        // compradorRelacion: {dataComprador}
+        compradorRelacion: data.compradorRelacion.idComprador 
       })
     }
 
@@ -145,6 +153,7 @@ export const TablePedidos = () => {
                     <option value="">- haz un comprador-</option>
                   }
                 </select>
+               
                 <button type="submit">{dataeditPedido ? "editar Pedido" : "crear Pedido"}</button>
               </form>
             </div>

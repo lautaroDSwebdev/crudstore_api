@@ -20,7 +20,6 @@ export function useMutationsComprador() {
             return postCompador(dataCompador)
         },
         onSuccess: function Exito() {
-            console.log("Post exitoso")
             QueryC.invalidateQueries({
                 queryKey: ["data_comprador"]
             })
@@ -31,7 +30,6 @@ export function useMutationsComprador() {
     const mutationPutCompador = useMutation({
         mutationFn: (dataCompador: Comprador ) =>  putCompador(dataCompador),
         onSuccess: function Exito() {
-            console.log("Edicion exitoso")
             QueryC.invalidateQueries({
                 queryKey: ["data_comprador"]
             })

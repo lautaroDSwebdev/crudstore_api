@@ -97,7 +97,7 @@ export const deleteCategoria = async (codigo_Categoria: number) => {
             transition: Bounce,
         });
     } catch (error) {
-        toast.warning('Categoria no se pudo eliminar 🛑', {
+        toast.warning('Categoria relacionada con otra entidad 🛑', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
