@@ -1,4 +1,4 @@
-import { ProductMapper, Productos } from "../types/TypesTiendaBackend";
+import { ProductMapper, Productos } from "../types/type-pedido";
 
 export const ServiceEntityMapper = {
     map: (apiService: Productos): ProductMapper => ({

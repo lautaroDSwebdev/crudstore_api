@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CategoriaProd } from "../types/TypesTiendaBackend";
+import { CategoriaProd } from "../types/type-pedido";
 import { api_general } from "../api";
 import { Bounce, toast } from "react-toastify";
 

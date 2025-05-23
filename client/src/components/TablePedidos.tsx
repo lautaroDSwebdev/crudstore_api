@@ -1,33 +1,59 @@
 import { useState } from "react";
 import { useMutationPedidos, useMutationsComprador, useMutationsProds } from "../intercecptors";
-import { Comprador, PedidosEntity } from "../types/TypesTiendaBackend";
+import { Comprador, PedidosEntity } from "../types/type-pedido";
 // import Select from 'react-select'
 // import { ServiceEntityMapper } from "../mappers/ProdMapper";
 // import Multiselect from 'multiselect-react-dropdown';
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
+import { getPedido } from "../use-cases";
+import { PaginationComponent } from "../reusable";
 export const TablePedidos = () => {
 
   const {
-    GetPedido,
     mutationDeletePedidos,
     mutationPostPedidos,
     mutationPutPedidos
   } = useMutationPedidos();
-  // const { GetProds } = useMutationsProds()
-
 
   const { GetCompradorquery } = useMutationsComprador()
-   
 
-  const { data: dataPedido } = GetPedido
-  // const { data: dataProds } = GetProds
+
   const { data: dataComprador } = GetCompradorquery
-  // console.log(dataPedido)
+
+  const [page, setpage] = useState(0)
+  const [size, setsizeDatapage] = useState(5)
+
+  const ClickNextPage = () => {
+    setpage(page + 1)
+  }
+  const ClickBackPage = () => {
+    if (page > 0) {
+      setpage(page - 1)
+    }
+    return null
+  }
+  const ClickMoreSizeDataPage = () => {
+    setsizeDatapage(size + 1)
+  }
+  const ClickLessSizeDataPage = () => {
+    if (size >= 2) {
+      setsizeDatapage(size - 1)
+    }
+    return null
+  }
+
+  const GetPedido = useQuery({
+    queryKey: ["data_pedido", page, size],
+    queryFn: () => getPedido({ page, size }),
+  });
+
+  const { data: dataPedido, isLoading } = GetPedido
 
 
   const [modal, setmodal] = useState(false)
   const [dataeditPedido, setdataeditPedido] = useState(null)
-  // console.log(dataeditPedido)
+
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       fechaPedido: "",
@@ -77,7 +103,7 @@ export const TablePedidos = () => {
       console.log({
         ...data,
         // listProds: (data as Productos[]).map(e => e.id_producto),
-        compradorRelacion: data.compradorRelacion.idComprador 
+        compradorRelacion: data.compradorRelacion.idComprador
       })
     }
 
@@ -153,60 +179,77 @@ export const TablePedidos = () => {
                     <option value="">- haz un comprador-</option>
                   }
                 </select>
-               
+
                 <button type="submit">{dataeditPedido ? "editar Pedido" : "crear Pedido"}</button>
               </form>
             </div>
           </div>
         }
+        <div className="section_tables">
 
-        <table>
-          <thead>
-            <tr>
-              <th>fecha del pedido</th>
-              <th>seña Pagada</th>
-              <th>comprador del pedido</th>
-              <th>opciones</th>
-            </tr>
-          </thead>
-          <tbody >
-            {
-              dataPedido?.map(e => (
-                <tr key={e.idPedido}>
-                  <td>{e.fechaPedido}</td>
-                  <td>{e.seniaPagada ? "pagada" : "falta pagar"}</td>
-                  <td>{e.compradorRelacion ?
-                    e.compradorRelacion.nombreComprador
-                    + " " + e.compradorRelacion.apellidoComprador
-                    : "no hay comprador"}</td>
-                  <td>
-                    <button onClick={() => EditPedido(e)}>editar</button>
-                    <button onClick={() => mutationDeletePedidos.mutate(e.idPedido)}>eliminar</button>
-                  </td>
+          <table>
+            <thead>
+              <tr>
+                <th>fecha del pedido</th>
+                <th>seña Pagada</th>
+                <th>comprador del pedido</th>
+                <th>opciones</th>
+              </tr>
+            </thead>
+            <tbody >
+              {
+                dataPedido?.content.map(e => (
+                  <tr key={e.idPedido}>
+                    <td>{e.fechaPedido}</td>
+                    <td>{e.seniaPagada ? "pagada" : "falta pagar"}</td>
+                    <td>{e.compradorRelacion ?
+                      e.compradorRelacion.nombreComprador
+                      + " " + e.compradorRelacion.apellidoComprador
+                      : "no hay comprador"}</td>
+                    <td>
+                      <button onClick={() => EditPedido(e)}>editar</button>
+                      <button onClick={() => mutationDeletePedidos.mutate(e.idPedido)}>eliminar</button>
+                    </td>
+                  </tr>
+                ))
+              }
+              {
+                isLoading &&
+                <tr>
+                  <td>cargando..</td>
+                  <td>cargando..</td>
+                  <td>cargando..</td>
                 </tr>
-              ))
-            }
-            {
-              dataPedido?.length === 0 &&
-              <tr className="tr_error-data">
-                <td>sin datos</td>
-                <td>sin datos</td>
-                <td>sin datos</td>
-              </tr>
-            }
-            {
-              dataPedido === undefined &&
-              <tr className="tr_error-data">
-                <td>sin datos</td>
-                <td>sin datos</td>
-                <td>sin datos</td>
-              </tr>
-            }
+              }
+              {
+                dataPedido?.content.length === 0 &&
+                <tr className="tr_error-data">
+                  <td>sin datos</td>
+                  <td>sin datos</td>
+                  <td>sin datos</td>
+                </tr>
+              }
+              {
+                dataPedido?.content === undefined &&
+                <tr className="tr_error-data">
+                  <td>sin datos</td>
+                  <td>sin datos</td>
+                  <td>sin datos</td>
+                </tr>
+              }
 
-          </tbody>
+            </tbody>
 
-        </table>
-
+          </table>
+        <PaginationComponent
+          ClickBackPage={ClickBackPage}
+          ClickNextPage={ClickNextPage}
+          ClickMoreSizeDataPage={ClickMoreSizeDataPage}
+          ClickLessSizeDataPage={ClickLessSizeDataPage}
+          page={page}
+          size={size}
+        />
+        </div>
 
       </div>
     </>

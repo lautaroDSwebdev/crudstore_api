@@ -1,16 +1,18 @@
 import axios from "axios";
-import { Productos } from "../types/TypesTiendaBackend";
+import { PaginationProd } from "../types/type-productos";
 import { api_general } from "../api";
 import { Bounce, toast } from "react-toastify";
 
 const apiProductos = axios.create({
     baseURL: `${api_general}`
 })
-export const getProductos = async () => {
-    const res = await apiProductos.get<Productos[]>("/prod")
+export const getProductos = async ({page, size}:{page: number, size: number} ) => {
+    const res = await apiProductos.get<PaginationProd>(`/prod`, {
+        params: {page, size}
+    })
     return res.data
 }
-export const postProductos = async (dataProductos: Productos) => {
+export const postProductos = async (dataProductos: PaginationProd) => {
   try {
       const res = await apiProductos.post("/prod", dataProductos)
       toast.success('Productos creado ✅', {
@@ -42,7 +44,7 @@ export const postProductos = async (dataProductos: Productos) => {
         console.log("Hubo un error en el postProductos: " + error)
     }
 }
-export const updateProductos = async ( dataProductos: Productos) => {
+export const updateProductos = async ( dataProductos: PaginationProd) => {
     try {
 
         const res = await apiProductos.put(`/prod`, dataProductos)

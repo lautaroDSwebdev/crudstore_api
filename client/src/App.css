@@ -1,48 +1,54 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    height: 100vh;
-  }
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  height: 100vh;
+}
 
-  h2{
-    text-align: center;
-  }
+h2 {
+  text-align: center;
+}
 
-  .grid{
+/* .grid{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     gap: 2rem;
     padding: 2rem;
     margin: auto;
     max-width: 900px;
-  }
+  } */
 
-.div_buttons{
+.section_tables {
+  height: 78vh;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+.div_buttons {
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
-  button{
+  button {
     min-width: 70px;
-
   }
   @media screen and (width< 768px) {
     display: flex;
     flex-flow: column;
-    
   }
-  
 }
 
 /* tabla ventas */
 table {
-  width: max-content;
+  width: 100%;
   border-collapse: collapse;
   background: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
 }
-th, td {
+
+th,
+td {
   padding: 12px;
   text-align: center;
   border-bottom: 1px solid #ddd;
@@ -54,13 +60,13 @@ th {
 tr:hover {
   background-color: #f1f1f1;
 }
-.div_nav-routes{
+.div_nav-routes {
   display: flex;
   margin: 0;
   height: 99vh;
   justify-content: space-evenly;
 }
-.nav_styles{
+.nav_styles {
   display: flex;
   justify-content: center;
   gap: 3rem;
@@ -72,20 +78,18 @@ tr:hover {
   width: 8rem;
   background: #868484;
   align-items: center;
-  a{
+  a {
     color: #fff;
   }
 }
-.modal_button{
+.modal_button {
   position: absolute;
   top: 3rem;
   right: 0;
 }
-.modal_form{
+.modal_form {
   position: absolute;
-
 }
-
 
 /* Modal */
 .modal {
@@ -133,7 +137,8 @@ label {
   text-align: left;
 }
 
-input, select {
+input,
+select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -150,24 +155,30 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  background: #0056b3;
+button {
+  &:hover {
+    background: #0056b3;
+  }
+  &:disabled {
+    background: #b4b4b4;
+    cursor: not-allowed;
+  }
 }
 
 /* Animación */
 @keyframes fadeIn {
   from {
-      opacity: 0;
-      transform: translateY(-10px);
+    opacity: 0;
+    transform: translateY(-10px);
   }
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.tr_error-data{
-  td{
+.tr_error-data {
+  td {
     color: #e69898;
   }
 }

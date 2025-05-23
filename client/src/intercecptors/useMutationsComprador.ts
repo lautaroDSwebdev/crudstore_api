@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-import {  Comprador } from "../types/TypesTiendaBackend";
+import {  Comprador } from "../types/type-pedido";
 import { postCompador, getCompador, deleteCompador, putCompador  } from "../use-cases";
 
 

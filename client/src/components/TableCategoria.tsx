@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutationCategoria } from "../intercecptors";
-import { categoria_schema } from "../types/TypesTiendaBackend";
+import { categoria_schema } from "../types/type-pedido";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export const Tablecategoria = () => {

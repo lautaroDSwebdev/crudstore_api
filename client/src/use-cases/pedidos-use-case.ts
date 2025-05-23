@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PedidosEntity } from "../types/TypesTiendaBackend";
+import { PaginationPedido } from "../types/type-pedido";
 import { api_general } from "../api";
 import { Bounce, toast } from "react-toastify";
 
@@ -9,11 +9,13 @@ import { Bounce, toast } from "react-toastify";
 const apiPedido = axios.create({
     baseURL: `${api_general}`
 })
-export const getPedido = async () => {
-    const res = await apiPedido.get<PedidosEntity[]>("/pedido")
+export const getPedido = async ({page, size}:{page: number, size: number}) => {
+    const res = await apiPedido.get<PaginationPedido>("/pedido", {
+        params: {page, size}
+    })
     return res.data
 }
-export const postPedido = async (datapedido: PedidosEntity) => {
+export const postPedido = async (datapedido: PaginationPedido) => {
     try {
         const res = await apiPedido.post("/pedido", datapedido)
         console.log("Pedido creado")
@@ -44,7 +46,7 @@ export const postPedido = async (datapedido: PedidosEntity) => {
         console.log(error)
     }
 }
-export const updatePedido = async (datapedido: PedidosEntity) => {
+export const updatePedido = async (datapedido: PaginationPedido) => {
     const res = await apiPedido.put(`/pedido`, datapedido)
     return res.data
 }

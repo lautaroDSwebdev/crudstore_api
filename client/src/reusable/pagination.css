@@ -1,0 +1,8 @@
+.pagination{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 12px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+  }

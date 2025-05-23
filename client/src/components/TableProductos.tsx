@@ -1,14 +1,17 @@
 // import { useState } from "react";
 import { useState } from "react";
+import "./style.css"
 import { useMutationsProds, useMutationCategoria } from "../intercecptors";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { CategoriaProd, Productos } from "../types/TypesTiendaBackend";
+import { PaginationProd } from "../types/type-productos";
 import { color_ropa, defValuesProducts, marca_prod } from "../mock";
-
+import { useQuery } from "@tanstack/react-query";
+import { getProductos } from "../use-cases";
+import { PaginationComponent } from "../reusable";
 export const TableProductos = (
 ) => {
 
-    const { GetProds,
+    const {
         mutationDeleteProd,
         mutationPostProductos,
         mutationPutProductos } = useMutationsProds();
@@ -16,34 +19,62 @@ export const TableProductos = (
     const { data: dataCategoria } = GetCategoria
 
 
-// console.log(dataProveedor)
-// console.log(dataCategoria)
+
+    const [page, setpage] = useState(0)
+    const [size, setsizeDatapage] = useState(5)
+
+    const ClickNextPage = () => {
+        setpage(page + 1)
+    }
+    const ClickBackPage = () => {
+        if (page > 0) {
+            setpage(page - 1)
+        }
+        return null
+    }
+    const ClickMoreSizeDataPage = () => {
+        setsizeDatapage(size + 1)
+    }
+    const ClickLessSizeDataPage = () => {
+        if (size >= 2) {
+            setsizeDatapage(size - 1)
+        }
+        return null
+    }
+    const GetProds = useQuery({
+        queryKey: ["data_producto", page, size],
+        queryFn: () => getProductos({ page, size })
+
+    });
+    const { data: dataProds } = GetProds
+
+    console.log(dataProds)
     const [modal, setmodal] = useState(false)
 
-
+    const [dataeditprod, setdataeditprod] = useState(null)
     const stock_number = Array.from({ length: 41 }, (_, i) => ({
         id: i,
         value: i
-      }));
+    }));
+
 
     const talle_number = Array.from({ length: 70 }, (_, i) => ({
         id: i,
         value: i
-      }));
+    }));
 
-    const { data } = GetProds
-    const [dataeditprod, setdataeditprod] = useState(null)
+
     const { register, handleSubmit, reset } = useForm(defValuesProducts);
 
     const HandleEditVenta = (e) => {
         setdataeditprod(e)
         reset({
             ...e,
-            categoria_prod: (e as CategoriaProd).id_categoria,
+            categoria_prod: (e as PaginationProd).content.map(e => e.categoria?.id_categoria),
         })
     }
 
-    const EditProd = (e: Productos) => {
+    const EditProd = (e: PaginationProd) => {
         setmodal(true)
         HandleEditVenta(e)
     }
@@ -56,11 +87,11 @@ export const TableProductos = (
         } else {
             console.log({
                 ...dataProd,
-                categoria_prod : {id_categoria: dataProd?.categoria_prod.id_categoria},
+                categoria_prod: { id_categoria: dataProd?.categoria_prod.id_categoria },
             })
             mutationPostProductos.mutate({
                 ...dataProd,
-                categoria_prod : {id_categoria: dataProd?.categoria_prod.id_categoria},
+                categoria_prod: { id_categoria: dataProd?.categoria_prod.id_categoria },
             })
         }
 
@@ -124,13 +155,13 @@ export const TableProductos = (
                                     ))
                                 }
                             </select>
-                           
+
                             <button type="submit">{dataeditprod ? "editar producto" : "crear producto"}</button>
                         </form>
                     </div>
                 </div>
             }
-            <div className="grid">
+            <div className="section_tables">
                 <table>
                     <thead>
                         <tr>
@@ -142,28 +173,22 @@ export const TableProductos = (
                         </tr>
                     </thead>
                     <tbody >
-                        {data?.map(e => (
-                            <tr key={e.id_producto} >
-                                <td>{e?.marca} </td>
-                                <td>{e?.precio}   </td>
-                                <td>{e?.stock}   </td>
-                                {
-                                    e.categoria_prod &&
-                                    <td> {e.categoria_prod.nombre}</td>
-                                }
-                                {
-                                    !e.categoria_prod &&
-                                    <td> no hay categoria</td>
-                                }
-                               
-                                <td>
-                                    <button onClick={() => EditProd(e)}>editar</button>
-                                    <button onClick={() => mutationDeleteProd.mutate(e.id_producto)}>eliminar</button>
-                                </td>
-                            </tr>
-                        ))}
                         {
-                            data?.length === 0 || data === undefined &&
+                            dataProds?.content.map(e => (
+                                <tr key={e.id_producto}>
+                                    <td>{e.marca}</td>
+                                    <td>{e.precio}</td>
+                                    <td>{e.stock}</td>
+                                    <td>{e.categoria ? e.categoria?.nombreCategoria : "crear-relacionar categoria"}</td>
+                                    <td>
+                                        <button onClick={() => EditProd(e)}>Editar</button>
+                                        <button onClick={() => mutationDeleteProd.mutate(e.id_producto)}>eliminar</button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                        {
+                            dataProds?.content.length === 0 || dataProds?.content === undefined &&
                             <tr className="tr_error-data" >
                                 <td>sin datos</td>
                                 <td>sin datos</td>
@@ -174,6 +199,14 @@ export const TableProductos = (
                         }
                     </tbody>
                 </table>
+                <PaginationComponent
+                    ClickBackPage={ClickBackPage}
+                    ClickNextPage={ClickNextPage}
+                    ClickMoreSizeDataPage={ClickMoreSizeDataPage}
+                    ClickLessSizeDataPage={ClickLessSizeDataPage}
+                    page={page}
+                    size={size}
+                />
             </div>
         </>
     );

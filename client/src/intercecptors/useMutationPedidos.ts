@@ -1,20 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { postPedido, getPedido, deletePedido, updatePedido } from "../use-cases/pedidos-use-case";
-import { PedidosEntity } from "../types/TypesTiendaBackend";
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { postPedido, deletePedido, updatePedido } from "../use-cases/pedidos-use-case";
+import { PaginationPedido } from "../types/type-pedido";
 
 
 export function useMutationPedidos() {
 
     const QueryC = useQueryClient()
 
-    const GetPedido = useQuery({
-        queryKey: ["data_pedido"],
-        queryFn: getPedido,
-    });
 
 
     const mutationPostPedidos = useMutation({
-        mutationFn: (datapedido: PedidosEntity) => {
+        mutationFn: (datapedido: PaginationPedido) => {
             return postPedido(datapedido)
         },
         onSuccess: function Exito() {
@@ -25,7 +21,7 @@ export function useMutationPedidos() {
     })
 
     const mutationPutPedidos = useMutation({
-        mutationFn: (datapedido: PedidosEntity ) =>  updatePedido(datapedido),
+        mutationFn: (datapedido: PaginationPedido ) =>  updatePedido(datapedido),
         onSuccess: function Exito() {
             console.log("Edicion exitoso")
             QueryC.invalidateQueries({
@@ -46,7 +42,6 @@ export function useMutationPedidos() {
 
     return {
         QueryC,
-        GetPedido,
         mutationPostPedidos,
         mutationPutPedidos,
         mutationDeletePedidos

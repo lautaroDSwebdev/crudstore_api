@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getCategoria , deleteCategoria, postCategoria, updateCategoria  } from "../use-cases/categoria-use-case";
-import { CategoriaProd } from "../types/TypesTiendaBackend";
+import { CategoriaProd } from "../types/type-pedido";
 
 
 export function useMutationCategoria() {
