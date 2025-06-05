@@ -1,11 +1,11 @@
-import { ProductMapper, Productos } from "../types/type-pedido";
+import { ProductMapper, ProductosEntity } from "../types/index"
 
-export const ServiceEntityMapper = {
-    map: (apiService: Productos): ProductMapper => ({
-        value: apiService.id_producto,
-        label: apiService.marca,
+export const ProductEntityMapper = {
+    map: (apiProd: ProductosEntity): ProductMapper => ({
+        value: apiProd?.id_producto,
+        label: apiProd?.marca,
     }),
 
-    mapArray: (apiServices: Productos[] = []): ProductMapper[] =>
-        apiServices.map(ServiceEntityMapper.map),
+    mapArray: (options: ProductosEntity[] = []): ProductMapper[] =>
+        options.map(ProductEntityMapper.map),
 };

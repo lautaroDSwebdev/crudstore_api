@@ -11,10 +11,13 @@
     "api": "npx json-server src/mock/api.json"
   },
   "dependencies": {
+    "@mantine/core": "^8.0.2",
+    "@mantine/hooks": "^8.0.2",
     "@tanstack/react-query": "^5.62.2",
     "axios": "^1.7.8",
     "json-server": "^1.0.0-beta.3",
     "multiselect-react-dropdown": "^2.0.25",
+    "primereact": "^10.9.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",

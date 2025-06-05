@@ -1,13 +1,20 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useMutationPedidos, useMutationsComprador, useMutationsProds } from "../intercecptors";
-import { Comprador, PedidosEntity } from "../types/type-pedido";
+import { CompradorTypesPaged, PaginationPedido, PaginationProd } from "../types/index";
 // import Select from 'react-select'
 // import { ServiceEntityMapper } from "../mappers/ProdMapper";
 // import Multiselect from 'multiselect-react-dropdown';
+
+
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { getPedido } from "../use-cases";
 import { PaginationComponent } from "../reusable";
+import axios from "axios";
+import { api_general } from "../api";
+import { ProductEntityMapper } from "../mappers/ProdMapper";
+import Select from "react-select/base";
+import { MultiSelect } from "@mantine/core";
 export const TablePedidos = () => {
 
   const {
@@ -16,10 +23,26 @@ export const TablePedidos = () => {
     mutationPutPedidos
   } = useMutationPedidos();
 
-  const { GetCompradorquery } = useMutationsComprador()
+  const { data: dataComprador } = useQuery({
+    queryKey: ["data_comprador"],
+    queryFn: async () => {
+      const { data } = await axios.get<CompradorTypesPaged>(`${api_general}/comprador`);
+      return data;
+    },
+  });
+
+  const { data: dataProd } = useQuery({
+    queryKey: ["data_prod"],
+    queryFn: async () => {
+      const { data } = await axios.get<PaginationProd>(`${api_general}/prod`);
+      return data;
+    },
+  });
 
 
-  const { data: dataComprador } = GetCompradorquery
+  // console.log(dataProd?.content)
+  const prod_mapper_data = ProductEntityMapper.mapArray(dataProd?.content)
+  // console.log(prod_mapper_data)
 
   const [page, setpage] = useState(0)
   const [size, setsizeDatapage] = useState(5)
@@ -50,6 +73,7 @@ export const TablePedidos = () => {
 
   const { data: dataPedido, isLoading } = GetPedido
 
+  // console.log(dataPedido)
 
   const [modal, setmodal] = useState(false)
   const [dataeditPedido, setdataeditPedido] = useState(null)
@@ -58,58 +82,66 @@ export const TablePedidos = () => {
     defaultValues: {
       fechaPedido: "",
       locacionTienda: "",
+      listProds: null,
       compradorRelacion: "",
-      listProveedor: null,
       seniaPagada: false
     }
   });
 
   const HandleEditPedido = (e) => {
     if (e) {
+      setmodal(true)
       setdataeditPedido(e)
       reset({
         ...e,
-        fechaPedido: (e as PedidosEntity).fechaPedido,
-        compradorRelacion: (e as Comprador).idComprador,
-        locacionTienda: (e as PedidosEntity).locacionTienda
+        fechaPedido: (e as PaginationPedido).content.map(e => e.fechaPedido),
+        compradorRelacion: (e as CompradorTypesPaged).content.map(e => e.idComprador),
+        locacionTienda: (e as PaginationPedido).content.map(e => e.locacionTienda)
       })
 
     }
   }
 
-  const EditPedido = (e: PedidosEntity) => {
-    setmodal(true)
-    HandleEditPedido(e)
-  }
 
-  const onSubmit: SubmitHandler<PedidosEntity> = (data) => {
-    if (data.idPedido) {
+  const onSubmit: SubmitHandler<PaginationPedido> = (data) => {
 
-      console.log("Put exitoso")
-      console.log("Lo que retorna el edit")
-      console.log({
-        ...data
-      })
-      mutationPutPedidos.mutate({
+    const dataPostProd = data.content.map(e => e.listProds?.map((e) => ({
+      ["content.id_producto"]: Number(e)
+    })))
+
+    const dataPostComprador = data.content.map(e => e.compradorRelacion
+      ? { idComprador: Number(data.content.map(e => e.compradorRelacion)) }
+      : null)
+
+      const payload = {
         ...data,
-        // listProds: (data as Productos[]).map(e => e.id_producto),
-        // compradorRelacion: (data as Comprador).idComprador
-      })
-    } else {
-      // mutationPostPedidos.mutate({
-      //   ...data
-      //   // listProds: (data as Productos[]).map(e => e.id_producto),
-      // })
-      console.log({
-        ...data,
-        // listProds: (data as Productos[]).map(e => e.id_producto),
-        compradorRelacion: data.compradorRelacion.idComprador
-      })
-    }
+        compradorRelacion: dataPostComprador,
+        lisrProds: dataPostProd
+      }
+      console.log(payload)
+    // if (data.content.map(e => e.idPedido)) {
+
+    //   console.log("Put exitoso")
+    //   console.log("Lo que retorna el edit")
+    //   console.log({
+    //     ...data
+    //   })
+    //   mutationPutPedidos.mutate({
+    //     ...data,
+    //     listProds: (data as Productos[]).map(e => e.id_producto),
+    //     compradorRelacion: (data as Comprador).idComprador
+    //   })
+    // } else {
+    //   mutationPostPedidos.mutate({
+    //     ...data
+    //     // listProds: (data as Productos[]).map(e => e.id_producto),
+    //   })
+    // }
 
     setmodal(false)
   }
 
+  const [select, setselect] = useState(null)
   const paises = [
     { code: "AR", name: "República Argentina" },
     { code: "MX", name: "Estados Unidos Mexicanos" },
@@ -130,44 +162,27 @@ export const TablePedidos = () => {
               <svg onClick={() => setmodal(!modal)}
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: "#f51919", cursor: "pointer" }} ><path d="M19.002 3h-14c-1.103 0-2 .897-2 2v4h2V5h14v14h-14v-4h-2v4c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.898-2-2-2z"></path><path d="m11 16 5-4-5-4v3.001H3v2h8z"></path></svg>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <input type="date" {...register("fechaPedido")} placeholder="fecha Pedido" />
-                <label htmlFor="seña">seña pagada</label>
-
-                <input type="checkbox" id="seña" {...register("seniaPagada")} placeholder="seña pagada" />
+                <label htmlFor="fecha">fecha pedido</label>
+                <input type="date" {...register("fechaPedido")} id="fecha" placeholder="fecha Pedido" />
+                <div className="div_label">
+                  <label htmlFor="seña">seña pagada</label>
+                  <input className="checkbox" type="checkbox" id="seña" {...register("seniaPagada")} placeholder="seña pagada" />
+                </div>
                 <label htmlFor="pais">selecciona el pais</label>
-                <select {...register("locacionTienda")} name="" id="pais">
+                <select {...register("locacionTienda")} id="pais">
+                  <option value="">seleccionar pais</option>
                   {
                     paises.map(e => (
                       <option key={e.name} value={e.name}>{e.name}</option>
-
                     ))
                   }
                 </select>
 
-                {/* <Multiselect
-                  options={dataProds} // Options to display in the dropdown
-                  selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-                  onSelect={this.onSelect} // Function will trigger on select event
-                  onRemove={this.onRemove} // Function will trigger on remove event
-                  displayValue="listProds" // Property name to display in the dropdown options
-                /> */}
-
-                {/* <Select {...register("listProds", { valueAsNumber: true })} options={ServiceEntityMapper(dataProds)}/> */}
-                {/* <select {...register("listProds", { valueAsNumber: true })} name="" id="" >
-                  {
-                    dataProds?.map(e => (
-                      <option key={e.id_producto} value={Number(e.id_producto)}>
-                        {e.marca} {e.precio}  id: ({e.id_producto})
-                      </option>
-
-                    ))
-                  }
-                </select> */}
                 <label htmlFor="comprador_pedido">Comprador del pedido</label>
                 <select {...register("compradorRelacion", { valueAsNumber: true })} name="compradorRelacion" id="">
                   {
                     dataComprador &&
-                    dataComprador.map(e => (
+                    dataComprador.content.map(e => (
                       <option key={e.idComprador} value={Number(e.idComprador)}>
                         {e.nombreComprador} {e.apellidoComprador}
                       </option>
@@ -179,7 +194,14 @@ export const TablePedidos = () => {
                     <option value="">- haz un comprador-</option>
                   }
                 </select>
-
+                {/* ProductEntityMapper.mapArray(dataProd?.content) */}
+                <select {...register("listProds", { valueAsNumber: true })} multiple id="">
+                  {
+                    dataProd?.content.map(e => (
+                      <option key={e.id_producto} value={e.id_producto}>{e.marca}</option>
+                    ))
+                  }
+                </select>
                 <button type="submit">{dataeditPedido ? "editar Pedido" : "crear Pedido"}</button>
               </form>
             </div>
@@ -193,6 +215,7 @@ export const TablePedidos = () => {
                 <th>fecha del pedido</th>
                 <th>seña Pagada</th>
                 <th>comprador del pedido</th>
+                <th>productos comprados</th>
                 <th>opciones</th>
               </tr>
             </thead>
@@ -202,13 +225,12 @@ export const TablePedidos = () => {
                   <tr key={e.idPedido}>
                     <td>{e.fechaPedido}</td>
                     <td>{e.seniaPagada ? "pagada" : "falta pagar"}</td>
-                    <td>{e.compradorRelacion ?
-                      e.compradorRelacion.nombreComprador
-                      + " " + e.compradorRelacion.apellidoComprador
-                      : "no hay comprador"}</td>
+                    <td>{e.listProds.length < 1 && "no hay productos"}</td>
+                    <td>{!e.listProds ? "sin datos" : e.listProds.length}</td>
                     <td>
-                      <button onClick={() => EditPedido(e)}>editar</button>
+                      <button onClick={() => HandleEditPedido(e)}>editar</button>
                       <button onClick={() => mutationDeletePedidos.mutate(e.idPedido)}>eliminar</button>
+                      <button>ver detalles</button>
                     </td>
                   </tr>
                 ))
@@ -241,14 +263,14 @@ export const TablePedidos = () => {
             </tbody>
 
           </table>
-        <PaginationComponent
-          ClickBackPage={ClickBackPage}
-          ClickNextPage={ClickNextPage}
-          ClickMoreSizeDataPage={ClickMoreSizeDataPage}
-          ClickLessSizeDataPage={ClickLessSizeDataPage}
-          page={page}
-          size={size}
-        />
+          <PaginationComponent
+            ClickBackPage={ClickBackPage}
+            ClickNextPage={ClickNextPage}
+            ClickMoreSizeDataPage={ClickMoreSizeDataPage}
+            ClickLessSizeDataPage={ClickLessSizeDataPage}
+            page={page}
+            size={size}
+          />
         </div>
 
       </div>

@@ -68,3 +68,9 @@
     list-style: disc;
   }
 }
+  .multiselect_style{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: #ffffff;
+  }

@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-export const categoria_schema = z.object({
-    nombre: z.string().min(1, "El nombre es obligatorio"),
-    descripcion: z.string().min(1, "El apellido es obligatorio"),
+export const Categoria_schema = z.object({
+    nombreCategoria: z.string().min(1, "El nombre es obligatorio"),
+    descripcionCategoria: z.string().min(1, "El apellido es obligatorio"),
 })
     
 

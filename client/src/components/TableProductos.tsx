@@ -20,6 +20,7 @@ export const TableProductos = (
 
 
 
+
     const [page, setpage] = useState(0)
     const [size, setsizeDatapage] = useState(5)
 
@@ -48,7 +49,7 @@ export const TableProductos = (
     });
     const { data: dataProds } = GetProds
 
-    console.log(dataProds)
+    // console.log(dataProds)
     const [modal, setmodal] = useState(false)
 
     const [dataeditprod, setdataeditprod] = useState(null)
@@ -68,32 +69,45 @@ export const TableProductos = (
 
     const HandleEditVenta = (e) => {
         setdataeditprod(e)
+        setmodal(true)
         reset({
             ...e,
-            categoria_prod: (e as PaginationProd).content.map(e => e.categoria?.id_categoria),
+            categoria: (e as PaginationProd).content[0].categoria.id_categoria,
         })
     }
 
-    const EditProd = (e: PaginationProd) => {
-        setmodal(true)
-        HandleEditVenta(e)
-    }
 
-    const onSubmit: SubmitHandler = (dataProd) => {
-        if (dataProd.id_producto) {
+
+    const onSubmit: SubmitHandler<PaginationProd> = (dataProd) => {
+
+        // if(!dataProd.content.map(e => e?.id_producto) || !Array.isArray(dataProd.content)){
+        //     console.log("no detecta el content")
+        //     return 
+        // }
+
+        if (dataProd?.content[0].id_producto) {
             mutationPutProductos.mutate(dataProd)
             console.log("data editada")
             console.log(dataProd)
         } else {
             console.log({
                 ...dataProd,
-                categoria_prod: { id_categoria: dataProd?.categoria_prod.id_categoria },
-            })
-            mutationPostProductos.mutate({
-                ...dataProd,
-                categoria_prod: { id_categoria: dataProd?.categoria_prod.id_categoria },
+                categoria_prod: { id_categoria: dataProd },
             })
         }
+        const postProd = {
+            ...dataProd,
+            categoria: dataCategoria && dataCategoria.length > 0 
+            ? { id_categoria: dataCategoria[0].id_categoria } : null,
+
+        }
+        console.log({
+            ...dataProd,
+            categoria: dataCategoria && dataCategoria.length > 0 
+            ? { id_categoria: dataCategoria[0].id_categoria } : null,
+
+        })
+        mutationPostProductos.mutate(postProd)
 
         setmodal(false)
     }
@@ -110,6 +124,7 @@ export const TableProductos = (
                         <svg onClick={() => setmodal(!modal)}
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: "#f51919", cursor: "pointer" }} ><path d="M19.002 3h-14c-1.103 0-2 .897-2 2v4h2V5h14v14h-14v-4h-2v4c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.898-2-2-2z"></path><path d="m11 16 5-4-5-4v3.001H3v2h8z"></path></svg>
                         <form onSubmit={handleSubmit(onSubmit)}>
+                            <label htmlFor="marca">marca</label>
                             <select {...register("marca")} name="marca" id="marca">
                                 {
                                     marca_prod.map(e => (
@@ -118,6 +133,8 @@ export const TableProductos = (
                                 }
                             </select>
                             <input type="number" {...register("precio", { valueAsNumber: true })} placeholder="precio" />
+
+                            <label htmlFor="talle">talle</label>
                             <select {...register("numberoTalle")} name="numberoTalle" id="talle">
                                 {
                                     talle_number.map(e => (
@@ -125,13 +142,15 @@ export const TableProductos = (
                                     ))
                                 }
                             </select>
-                            <select {...register("stock")} name="stock" id="stock">
+                            <label htmlFor="stock">stock</label>
+                            <select {...register("stock")} id="stock">
                                 {
                                     stock_number.map(e => (
                                         <option key={e.id} value={e.value}>stock de ropa: {e.value}</option>
                                     ))
                                 }
                             </select>
+                            <label htmlFor="color">color</label>
                             <select {...register("color")} name="color" id="color">
                                 {
                                     color_ropa.map(e => (
@@ -139,7 +158,8 @@ export const TableProductos = (
                                     ))
                                 }
                             </select>
-                            <select {...register("categoria_prod.id_categoria", { valueAsNumber: true })}  >
+                            <label htmlFor="categoria">categoria</label>
+                            <select {...register("categoria", { valueAsNumber: true })} id="categoria"  >
 
                                 {
                                     dataCategoria === undefined &&
@@ -151,7 +171,7 @@ export const TableProductos = (
                                 }
                                 {
                                     dataCategoria && dataCategoria.map(e => (
-                                        <option key={e.id_categoria} value={e.id_categoria}>categoria: {e.nombre}</option>
+                                        <option key={e.id_categoria} value={e.id_categoria}>categoria: {e.nombreCategoria}</option>
                                     ))
                                 }
                             </select>
@@ -181,7 +201,7 @@ export const TableProductos = (
                                     <td>{e.stock}</td>
                                     <td>{e.categoria ? e.categoria?.nombreCategoria : "crear-relacionar categoria"}</td>
                                     <td>
-                                        <button onClick={() => EditProd(e)}>Editar</button>
+                                        <button onClick={() => HandleEditVenta(e)}>Editar</button>
                                         <button onClick={() => mutationDeleteProd.mutate(e.id_producto)}>eliminar</button>
                                     </td>
                                 </tr>

@@ -1,17 +1,49 @@
 import { useState } from "react";
-import { useMutationsComprador} from "../intercecptors";
-import {  } from "../types/type-pedido";
+import { useMutationsComprador } from "../intercecptors";
+import { } from "../types/type-pedido";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { CompradorTypesPaged } from "../types";
+import { PaginationComponent } from "../reusable";
+import { useQuery } from "@tanstack/react-query";
+import { getCompadorPaged } from "../use-cases";
 export const TableComprador = () => {
 
 
 
   const {
-    GetCompradorquery,
     mutationDeleteCompador,
     mutationPostCompador,
     mutationPutCompador
   } = useMutationsComprador()
+
+
+  const [page, setpage] = useState(0)
+  const [size, setsizeDatapage] = useState(5)
+
+  const ClickNextPage = () => {
+      setpage(page + 1)
+  }
+  const ClickBackPage = () => {
+      if (page > 0) {
+          setpage(page - 1)
+      }
+      return null
+  }
+  const ClickMoreSizeDataPage = () => {
+      setsizeDatapage(size + 1)
+  }
+  const ClickLessSizeDataPage = () => {
+      if (size >= 2) {
+          setsizeDatapage(size - 1)
+      }
+      return null
+  }
+
+  const GetCompradorquery = useQuery({
+    queryKey: ["data_comprador",page, size],
+    queryFn:()=> getCompadorPaged({page, size}),
+});
+
 
   const { data } = GetCompradorquery
   const [modal, setmodal] = useState(false)
@@ -19,7 +51,7 @@ export const TableComprador = () => {
   console.log(data)
 
 
-  
+
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       idComprador: null,
@@ -33,15 +65,12 @@ export const TableComprador = () => {
   const HandleEditCliente = (e) => {
     setdataeditcliente(e)
     reset(e)
-  }
-
-  const EditCliente = (e: CompradorRelacion) => {
     setmodal(true)
-    HandleEditCliente(e)
   }
 
-  const onSubmit: SubmitHandler<CompradorRelacion> = (data) => {
-    if (data.idComprador) {
+ 
+  const onSubmit: SubmitHandler<CompradorTypesPaged> = (data) => {
+    if (data.content.map(e => e.idComprador)) {
       mutationPutCompador.mutate(data)
       console.log("Put exitoso")
       console.log(data)
@@ -56,7 +85,7 @@ export const TableComprador = () => {
   return (
     <>
       <button onClick={() => setmodal(!modal)} className="modal_button">abrir modal</button>
-      <div className="grid">
+      <div className="">
         {
           modal &&
           <div className="modal">
@@ -75,54 +104,63 @@ export const TableComprador = () => {
             </div>
           </div>
         }
+        <section className="section_tables">
 
-        <table>
-          <thead>
-            <tr>
-              <th>nombre</th>
-              <th>apellido</th>
-              <th>dni</th>
-              <th>num tarjeta</th>
-              <th>opciones</th>
-            </tr>
-          </thead>
-          <tbody >
-            {
-              data?.map(e => (
-                <tr key={e.idComprador}>
-                  <td> {e.nombreComprador}</td>
-                  <td> {e.apellidoComprador}</td>
-                  <td> {e.dniComprador}</td>
-                  <td> {e.numTarjeta}</td>
-                  <td>
-                    <button onClick={() => EditCliente(e)}>editar</button>
-                    <button onClick={() => mutationDeleteCompador.mutate(e.idComprador)}>eliminar</button>
-                  </td>
+          <table>
+            <thead>
+              <tr>
+                <th>nombre</th>
+                <th>apellido</th>
+                <th>dni</th>
+                <th>num tarjeta</th>
+                <th>opciones</th>
+              </tr>
+            </thead>
+            <tbody >
+              {
+                data?.content.map(e => (
+                  <tr key={e.idComprador}>
+                    <td> {e.nombreComprador}</td>
+                    <td> {e.apellidoComprador}</td>
+                    <td> {e.dniComprador}</td>
+                    <td> {e.numTarjeta}</td>
+                    <td>
+                      <button onClick={() => HandleEditCliente(e)}>editar</button>
+                      <button onClick={() => mutationDeleteCompador.mutate(e.idComprador)}>eliminar</button>
+                    </td>
+                  </tr>
+                ))
+              }
+              {
+                data?.content.length === 0 &&
+                <tr className="tr_error-data">
+                  <td>sin datos</td>
+                  <td>sin datos</td>
+                  <td>sin datos</td>
                 </tr>
-              ))
-            }
-            {
-              data?.length === 0 &&
-              <tr className="tr_error-data">
-                <td>sin datos</td>
-                <td>sin datos</td>
-                <td>sin datos</td>
-              </tr>
-            }
-            {
-              data === undefined &&
-              <tr className="tr_error-data">
-                <td>sin datos</td>
-                <td>sin datos</td>
-                <td>sin datos</td>
-              </tr>
-            }
+              }
+              {
+                data?.content === undefined &&
+                <tr className="tr_error-data">
+                  <td>sin datos</td>
+                  <td>sin datos</td>
+                  <td>sin datos</td>
+                </tr>
+              }
 
-          </tbody>
+            </tbody>
 
-        </table>
+          </table>
 
-
+        <PaginationComponent
+          ClickBackPage={ClickBackPage}
+          ClickNextPage={ClickNextPage}
+          ClickMoreSizeDataPage={ClickMoreSizeDataPage}
+          ClickLessSizeDataPage={ClickLessSizeDataPage}
+          page={page}
+          size={size}
+        />
+        </section>
       </div>
     </>
   );

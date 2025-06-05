@@ -1,5 +1,7 @@
+import { CategoriaTypes } from "./types-categoria"
+
 export interface PaginationProd {
-  content: Content[]
+  content: ProductosEntity[]
   pageable: Pageable
   totalPages: number
   totalElements: number
@@ -12,21 +14,21 @@ export interface PaginationProd {
   empty: boolean
 }
 
-export interface Content {
+export interface ProductosEntity {
   id_producto: number
   marca: string
   precio: number
   stock: number
   numberoTalle: number
   color: string
-  categoria?: Categoria
+  categoria: CategoriaTypes
+}
+export interface ProductMapper{
+  value: number
+  label: string
 }
 
-export interface Categoria {
-  id_categoria: number
-  nombreCategoria: string
-  descripcionCategoria: string
-}
+
 
 export interface Pageable {
   pageNumber: number

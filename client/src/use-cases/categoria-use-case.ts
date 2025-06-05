@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CategoriaProd } from "../types/type-pedido";
+import { CategoriaTypes } from "../types/types-categoria";
 import { api_general } from "../api";
 import { Bounce, toast } from "react-toastify";
 
@@ -11,13 +11,13 @@ export const apiCategoria = axios.create({
 })
 export const getCategoria = async () => {
     try {
-        const res = await apiCategoria.get<CategoriaProd[]>("/categoria")
+        const res = await apiCategoria.get<CategoriaTypes[]>("/categoria")
         return res.data
     } catch (error) {
         console.log(error)
     }
 }
-export const postCategoria = async (dataCategoria: CategoriaProd) => {
+export const postCategoria = async (dataCategoria: CategoriaTypes) => {
     try {
         const res = await apiCategoria.post("/categoria", dataCategoria)
         console.log("Categoria creado")
@@ -48,7 +48,7 @@ export const postCategoria = async (dataCategoria: CategoriaProd) => {
         console.log(error)
     }
 }
-export const updateCategoria = async (dataCategoria: CategoriaProd) => {
+export const updateCategoria = async (dataCategoria: CategoriaTypes) => {
     try {
         
         const res = await apiCategoria.put(`/categoria`, dataCategoria)

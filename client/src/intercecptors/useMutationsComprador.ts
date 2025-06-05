@@ -1,22 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import {  Comprador } from "../types/type-pedido";
-import { postCompador, getCompador, deleteCompador, putCompador  } from "../use-cases";
+import { CompradorTypesPaged } from "../types/index";
+import { postCompador, deleteCompador, putCompador } from "../use-cases";
 
 
 export function useMutationsComprador() {
 
     const QueryC = useQueryClient()
 
-    const GetCompradorquery = useQuery({
-        queryKey: ["data_comprador"],
-        queryFn: getCompador,
-    });
- 
  
 
+
     const mutationPostCompador = useMutation({
-        mutationFn: (dataCompador: Comprador) => {
+        mutationFn: (dataCompador: CompradorTypesPaged) => {
             return postCompador(dataCompador)
         },
         onSuccess: function Exito() {
@@ -28,7 +24,7 @@ export function useMutationsComprador() {
 
 
     const mutationPutCompador = useMutation({
-        mutationFn: (dataCompador: Comprador ) =>  putCompador(dataCompador),
+        mutationFn: (dataCompador: CompradorTypesPaged) => putCompador(dataCompador),
         onSuccess: function Exito() {
             QueryC.invalidateQueries({
                 queryKey: ["data_comprador"]
@@ -45,11 +41,9 @@ export function useMutationsComprador() {
         }
     })
 
-    
+
 
     return {
-        GetCompradorquery,
-        QueryC,
         mutationDeleteCompador,
         mutationPostCompador,
         mutationPutCompador,

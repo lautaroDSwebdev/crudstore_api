@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Comprador } from "../types/type-pedido";
+import { CompradorTypesPaged } from "../types/index";
 import { api_general } from "../api";
 import { Bounce, toast } from "react-toastify";
 
@@ -7,11 +7,14 @@ const apiCompador = axios.create({
     baseURL: `${api_general}`
 })
 
-export const getCompador = async () => {
-    const res = await apiCompador.get<Comprador[]>("/comprador")
+export const getCompadorPaged = async ({page, size}: {page: number, size: number}) => {
+    const res = await apiCompador.get<CompradorTypesPaged>("/comprador", {
+        params: {page, size}
+    })
     return res.data
 }
-export const postCompador = async (dataprod: Comprador) => {
+
+export const postCompador = async (dataprod: CompradorTypesPaged) => {
     try {
         const res = await apiCompador.post("/comprador", dataprod)
         console.log("Compador creado")
@@ -42,7 +45,7 @@ export const postCompador = async (dataprod: Comprador) => {
         console.log(error)
     }
 }
-export const putCompador = async (dataprod: Comprador) => {
+export const putCompador = async (dataprod: CompradorTypesPaged) => {
     try {
         const res = await apiCompador.put(`/comprador`, dataprod)
         console.log("Compador editado")

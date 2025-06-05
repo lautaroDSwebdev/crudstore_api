@@ -1,3 +1,6 @@
+import { ProductosEntity } from "./type-productos"
+import { CompradorTypesPaged } from "./types-comprador"
+
 export interface PaginationPedido {
   content: ContentPedido[]
   pageable: Pageable
@@ -19,33 +22,11 @@ export interface ContentPedido {
   horaDespacho: string
   horaLlegada: string
   locacionTienda: string
-  listProds: ListProd[]
-  compradorRelacion?: CompradorRelacion
+  listProds: ProductosEntity[]
+  compradorRelacion?: CompradorTypesPaged
 }
 
-export interface ListProd {
-  id_producto: number
-  marca: string
-  precio: number
-  stock: number
-  numberoTalle: number
-  color: string
-  categoria: Categoria
-}
 
-export interface Categoria {
-  id_categoria: number
-  nombreCategoria: string
-  descripcionCategoria: string
-}
-
-export interface CompradorRelacion {
-  idComprador: number
-  nombreComprador: string
-  apellidoComprador: string
-  dniComprador: number
-  numTarjeta: number
-}
 
 export interface Pageable {
   pageNumber: number

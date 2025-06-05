@@ -7,7 +7,15 @@ body {
 h2 {
   text-align: center;
 }
-
+.div_label{
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  .checkbox{
+    height: auto;
+    width: max-content;
+  }
+}
 /* .grid{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
@@ -129,12 +137,18 @@ tr:hover {
 form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
+  padding: 3px;
 }
 
 label {
   font-weight: bold;
   text-align: left;
+  cursor: pointer;
+  font-size: 17px;
+  &:hover{
+    color: #747272;
+  }
 }
 
 input,
